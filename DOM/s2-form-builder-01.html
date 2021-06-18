@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        const formItems = [
+            { label: 'نام', type: 'text', value: '' },
+            { label: 'کدملی', type: 'number', value: '' }
+        ];
+
+        function buildForm(myFormItems) {
+            if (!Array.isArray(myFormItems)) {
+                console.log("buildForm function expects Array type");
+                return;
+            }
+            for (const item of myFormItems) {
+                if (
+                    !item.label ||
+                    (
+                        item.type !== "text" &&
+                        item.type !== "number"
+                    )
+                ) {
+                    console.log(item, "item data is invalid!");
+                    return;
+                }
+                const body = document.body;
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                input.type = item.type;
+                input.value = item.value;
+                label.textContent = item.label;
+                body.appendChild(label);
+                body.appendChild(input);
+                body.appendChild(
+                    document.createElement('br')
+                )
+            }
+        }
+
+        buildForm(formItems);
+    </script>
+</body>
+
+</html>
