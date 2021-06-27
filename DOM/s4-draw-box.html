@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Box</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            cursor: crosshair;
+        }
+        .draw-area {
+            border: 1px dashed #f00;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="draw-area"></div>
+    <script>
+        const body = document.body;
+        const drawArea = document.querySelector('.draw-area');
+        let mouseDownHappend = false;
+        
+        const mousePoints = {
+            start: { x: 0, y: 0 },
+            end: { x: 0, y: 0 }
+        };
+
+        const boxDimentions = {
+            width: 0,
+            height: 0
+        };
+
+        body.addEventListener('mousedown', function (event) {
+            mouseDownHappend = true;
+
+            mousePoints.start.x = event.clientX;
+            mousePoints.start.y = event.clientY;
+
+            drawArea.style.display = 'block';
+            drawArea.style.width = 0;
+            drawArea.style.height = 0;
+            drawArea.style.left = mousePoints.start.x + 'px';
+            drawArea.style.top = mousePoints.start.y + 'px';
+        });
+
+        body.addEventListener('mouseup', ev => {
+            if (event.ctrlKey) {
+
+                const newBox = document.createElement('div');
+                newBox.style.backgroundColor = '#888';
+                newBox.style.position = 'absolute';
+                newBox.style.top = mousePoints.start.y + 'px';
+                newBox.style.left = mousePoints.start.x + 'px';
+
+                newBox.style.width = boxDimentions.width;
+                newBox.style.height = boxDimentions.height;
+
+                body.appendChild(newBox);
+            }
+            
+            drawArea.style.display = 'none';
+            mouseDownHappend = false;
+        });
+
+        body.addEventListener('mousemove', function(event) {
+            if (event.ctrlKey && mouseDownHappend) {
+                mousePoints.end.x = event.clientX;
+                mousePoints.end.y = event.clientY;
+
+                boxDimentions.width = Math.abs(mousePoints.end.x - mousePoints.start.x) + 'px';
+                boxDimentions.height = Math.abs(mousePoints.end.y - mousePoints.start.y) + 'px';
+
+                drawArea.style.width = boxDimentions.width;
+                drawArea.style.height = boxDimentions.height;
+            }
+        });
+    </script>
+</body>
+</html>
